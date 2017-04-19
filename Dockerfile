@@ -37,6 +37,8 @@ RUN cd /las/deps && git clone https://github.com/milankinen/seco-lexicalanalysis
 RUN cd /las/deps/seco-lexicalanalysis \
     && curl -L -o models.tar.xz https://github.com/jiemakel/seco-lexicalanalysis/releases/download/v${TRANSDUCER_VERSION}/transducers-and-models.tar.xz
 RUN cd /las/deps/seco-lexicalanalysis && ls -lh && tar vxf models.tar.xz
+# remove all marmot stuff due to licensing restrictions
+RUN rm /las/deps/seco-lexicalanalysis/src/main/resources/fi/seco/lexical/combined/fin_model.marmot
 
 # install seco deps
 RUN cd /las/deps/seco-hfst && mvn install -Dgpg.skip
