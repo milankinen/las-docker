@@ -3,7 +3,7 @@ MAINTAINER "Matti Lankinen mla@reaktor.com"
 
 # parametrize dependency versions
 ARG SECO_HFST_VERSION="1.1.5"
-ARG SECO_LEXI_VERSION="1.5.4"
+ARG SECO_LEXI_VERSION="1.5.5"
 ARG TRANSDUCER_VERSION="1.4.9"
 
 # install required libraries
