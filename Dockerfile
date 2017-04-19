@@ -25,20 +25,25 @@ RUN mvn install:install-file \
        -Dversion=3.6 \
        -Dpackaging=jar \
        -DgeneratePom=true
+RUN mvn install:install-file \
+       -Dfile=/tmp/lib/marmot-2014-10-22.jar \
+       -DgroupId=marmot \
+       -DartifactId=marmot \
+       -Dversion=2014-10-22 \
+       -Dpackaging=jar \
+       -DgeneratePom=true
 RUN rm -rf /tmp/lib
 
 # checkout deps
 WORKDIR /las
 RUN mkdir -p /las/deps
 RUN cd /las/deps && git clone https://github.com/jiemakel/seco-hfst.git && cd seco-hfst && git checkout v${SECO_HFST_VERSION}
-RUN cd /las/deps && git clone https://github.com/milankinen/seco-lexicalanalysis.git
+RUN cd /las/deps && git clone https://github.com/jiemakel/seco-lexicalanalysis.git && cd seco-lexicalanalysis && git checkout v${SECO_LEXI_VERSION}
 
 # download transducers and models
 RUN cd /las/deps/seco-lexicalanalysis \
     && curl -L -o models.tar.xz https://github.com/jiemakel/seco-lexicalanalysis/releases/download/v${TRANSDUCER_VERSION}/transducers-and-models.tar.xz
 RUN cd /las/deps/seco-lexicalanalysis && ls -lh && tar vxf models.tar.xz
-# remove all marmot stuff due to licensing restrictions
-RUN rm /las/deps/seco-lexicalanalysis/src/main/resources/fi/seco/lexical/combined/fin_model.marmot
 
 # install seco deps
 RUN cd /las/deps/seco-hfst && mvn install -Dgpg.skip
@@ -55,7 +60,8 @@ RUN mv /las/play/target/universal/lexicalanalysis-play* /las/app
 
 # add custom entrypoint with easy memory config via environment variables
 ENV LAS_MEMORY="2048"
-RUN echo "/las/app/bin/lexicalanalysis-play -mem $LAS_MEMORY" > /las/app/entrypoint.sh && chmod 755 /las/app/entrypoint.sh
+RUN echo "echo \"Using $LAS_MEMORY MB memory setting...\"" > /las/app/entrypoint.sh
+RUN echo "/las/app/bin/lexicalanalysis-play -mem $LAS_MEMORY" >> /las/app/entrypoint.sh && chmod 755 /las/app/entrypoint.sh
 
 # cleanup intermediate files in order to keep image size even reasonable...
 RUN rm -rf /las/play /las/deps /root/.m2 /root/.ivy2
