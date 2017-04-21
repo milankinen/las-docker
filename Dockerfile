@@ -60,8 +60,8 @@ RUN mv /las/play/target/universal/lexicalanalysis-play* /las/app
 
 # add custom entrypoint with easy memory config via environment variables
 ENV LAS_MEMORY="2048"
-RUN echo "echo \"Using $LAS_MEMORY MB memory setting...\"" > /las/app/entrypoint.sh
-RUN echo "/las/app/bin/lexicalanalysis-play -mem $LAS_MEMORY" >> /las/app/entrypoint.sh && chmod 755 /las/app/entrypoint.sh
+RUN echo "echo \"Using \$LAS_MEMORY MB memory setting...\"" > /las/app/entrypoint.sh
+RUN echo "/las/app/bin/lexicalanalysis-play -mem \$LAS_MEMORY" >> /las/app/entrypoint.sh && chmod 755 /las/app/entrypoint.sh
 
 # cleanup intermediate files in order to keep image size even reasonable...
 RUN rm -rf /las/play /las/deps /root/.m2 /root/.ivy2
