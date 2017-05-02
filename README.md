@@ -27,7 +27,7 @@ $ docker run --rm -e LAS_MEMORY=4096 -p 19990:9000 -t -i milankinen/seco-las
 
 ## API
 
-See [the official documentation](http://demo.seco.tkk.fi/las).
+See [the official documentation](http://demo.seco.tkk.fi/las/).
 
 
 ## License
